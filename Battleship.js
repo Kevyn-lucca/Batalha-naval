@@ -43,7 +43,7 @@ class ShipGameBoard {
 		]; // Vidas e posições dos navios
 
 		ships.forEach((ship) => {
-			this.sea[ship.position] = new Ship(ship.size);
+			this.sea[ship.position + 1] = new Ship(ship.size.splice(""));
 		});
 	}
 
