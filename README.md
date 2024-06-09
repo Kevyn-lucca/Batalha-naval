@@ -1,4 +1,4 @@
-# Esse codigo recria digitalmente o classico batalha navalhe 
+# Esse codigo recria digitalmente o classico batalha naval
 
 As tecnologias utilizadas foram:
 
