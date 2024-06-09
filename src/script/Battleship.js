@@ -52,6 +52,7 @@ class GameBoard {
 
 class Player extends GameBoard {
 	constructor(real) {
+		super();
 		this.real = real;
 	}
 
