@@ -2,49 +2,30 @@ class Ship {
 	constructor(length) {
 		this.length = length; // Comprimento do navio
 		this.sunk = false; // Estado inicial do navio
-		this.hit = 0; // Número de acertos recebidos
 	}
 
 	// Método para verificar se o navio está afundado
 	isSunk() {
-		this.hit += 1; // Incrementa o número de acertos
-		if (this.hit >= this.length) {
-			this.sunk = true; // Se os acertos são maiores ou iguais ao comprimento, o navio está afundado
-		}
-		return this.sunk;
+		return (this.sunk = true);
 	}
 }
 
-class ShipGameBoard {
+class GameBoard {
 	constructor() {
 		this.sea = []; // Inicializa o array 'sea'
 	}
 
 	// Método para configurar o jogo
 	SetGame() {
-		this.sea = new Array(100).fill("water"); // Preenche o array 'sea' com 90 elementos "water"
+		this.sea = new Array(100).fill("water"); // Preenche o array 'sea' com 100 elementos "water"
 	}
 
 	// Método para colocar o navio
-	PutShip() {
-		// Modificar essa função para ela adicionar diversos barcos
-		// so escolher posição, hardcode vida do navio
-		// Adiciona um novo navio ao array 'sea'
-		const ships = [
-			{ size: 6, position: 0 },
-			{ size: 4, position: 11 },
-			{ size: 4, position: 22 },
-			{ size: 3, position: 33 },
-			{ size: 3, position: 44 },
-			{ size: 3, position: 55 },
-			{ size: 2, position: 66 },
-			{ size: 2, position: 77 },
-			{ size: 2, position: 88 },
-		]; // Vidas e posições dos navios
-
-		ships.forEach((ship) => {
-			this.sea[ship.position + 1] = new Ship(ship.size.splice(""));
-		});
+	PutShip(ship, position) {
+		let newShip = new Ship(ship.size);
+		for (let i = 0; i < ship.size; i++) {
+			this.sea[position + i] = newShip; // Usa a mesma instância do navio para todas as posições
+		}
 	}
 
 	GotAttacked(attack) {
@@ -52,21 +33,75 @@ class ShipGameBoard {
 		// Checa se um navio ou nada está naquele local
 		if (target instanceof Ship) {
 			target.isSunk();
-			if (target.sunk == true) {
-				this.sea[attack] = "Sunken Ship"; // Se tiver um navio, substitui aquele espaço por um navio afundado, quando o hp do navio chegar a zero
-			}
+			this.sea[attack] = "Sunken Ship";
 		} else {
-			this.sea[attack] = "cannonball"; // Se não tiver, substitui aquele espaço no array por uma bola de canhão
+			this.sea[attack] = "cannonball"; // Se não tiver navio, marca com bola de canhão
 		}
 	}
 
 	GameEnd() {
-		if (this.sea instanceof Ship) {
-			//O jogo continua
-		} else {
+		const allCellsValid = this.sea.every(
+			(cell) =>
+				cell === "water" || cell === "Sunken Ship" || cell === "cannonball"
+		);
+
+		// Retorna "Game over" se todas as células forem válidas, caso contrário continua o jogo
+		if (allCellsValid) {
 			return "Game over";
+		} else {
 		}
 	}
 }
 
-export { Ship, ShipGameBoard };
+class Player extends GameBoard {
+	constructor(real) {
+		super();
+		this.real = real;
+	}
+
+	ControlShipPosition() {
+		if (this.real == true) {
+			//Solicitar ao jogador para clicar e colocar um navio em cada posição
+			console.log("Player, posicione seus navios:");
+
+			const ships = [
+				{ size: 6, name: "Ship1" },
+				{ size: 4, name: "Ship2" },
+				{ size: 4, name: "Ship3" },
+				{ size: 3, name: "Ship4" },
+				{ size: 3, name: "Ship5" },
+				{ size: 3, name: "Ship6" },
+				{ size: 2, name: "Ship7" },
+				{ size: 2, name: "Ship8" },
+				{ size: 2, name: "Ship9" },
+			];
+
+			ships.forEach((ship) => {
+				let position = parseInt(
+					prompt(
+						`Digite a posição inicial para o navio ${ship.name} (de 0 a 99):`
+					)
+				);
+				this.PutShip(ship, position);
+			});
+		} else {
+			console.log("Computador, posicione seus navios:");
+
+			const ships = [
+				{ size: 6, name: "Ship1", position: 2 },
+				{ size: 4, name: "Ship2", position: 12 },
+				{ size: 4, name: "Ship3", position: 22 },
+				{ size: 3, name: "Ship4", position: 32 },
+				{ size: 3, name: "Ship5", position: 42 },
+				{ size: 3, name: "Ship6", position: 52 },
+				{ size: 2, name: "Ship7", position: 62 },
+				{ size: 2, name: "Ship8", position: 72 },
+				{ size: 2, name: "Ship9", position: 82 },
+			];
+
+			ships.forEach((ship) => {
+				this.PutShip(ship, ship.position);
+			});
+		}
+	}
+}

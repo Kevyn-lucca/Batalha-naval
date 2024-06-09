@@ -1,4 +1,4 @@
-import { Ship, ShipGameBoard } from "./Battleship";
+import { Ship, GameBoard } from "./Battleship";
 
 describe("Ship", () => {
 	test("should create a ship with given length", () => {
