@@ -1,13 +1,39 @@
-.gameBoard {
+section {
+	margin-top: 2rem;
 	display: flex;
 	justify-content: space-evenly;
-	padding-top: 30vh;
 }
 
-.game {
-	max-width: 24rem;
+#NameDiv {
+	display: flex;
+	margin-top: 1rem;
+	place-content: center;
 }
 
-.sea {
-	padding: 1rem;
+.board {
+	display: grid;
+	grid-template-columns: repeat(10, 30px);
+	gap: 2px;
+	margin: 20px;
+}
+.cell {
+	width: 30px;
+	height: 30px;
+	background-color: lightblue;
+	border: 1px solid black;
+}
+.cell.ship {
+	background-color: grey;
+}
+.cell.preview {
+	background-color: lightgrey;
+}
+.cell.hit {
+	background-color: red;
+}
+.cell.miss {
+	background-color: white;
+}
+.cell.sunk {
+	background-color: black;
 }

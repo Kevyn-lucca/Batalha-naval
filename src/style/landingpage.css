@@ -1,3 +1,7 @@
+* {
+	text-align: center;
+}
+
 a {
 	text-decoration: none;
 	color: black;
@@ -24,7 +28,7 @@ body {
 .ButtonSection {
 	display: flex;
 	justify-content: center;
-	padding-top: 25vh;
+	padding-top: 35vh;
 }
 
 .ButtonSection div {
