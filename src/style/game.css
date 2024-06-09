@@ -1,0 +1,13 @@
+.gameBoard {
+	display: flex;
+	justify-content: space-evenly;
+	padding-top: 30vh;
+}
+
+.game {
+	max-width: 24rem;
+}
+
+.sea {
+	padding: 1rem;
+}

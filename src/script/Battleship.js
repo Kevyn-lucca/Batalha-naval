@@ -1,10 +1,11 @@
 class Ship {
-	constructor() {
+	constructor(size) {
+		this.size = size; // Adiciona o tamanho como parâmetro e o define
 		this.sunk = false;
 	}
 
 	isSunk() {
-		return (this.sunk = true);
+		return this.sunk; // Retorna o status de 'sunk'
 	}
 }
 
@@ -30,7 +31,7 @@ class GameBoard {
 		let target = this.sea[attack];
 		// Checa se um navio ou nada está naquele local
 		if (target instanceof Ship) {
-			target.isSunk();
+			target.sunk = true; // Define o navio como afundado
 			this.sea[attack] = "Sunken Ship";
 		} else {
 			this.sea[attack] = "cannonball"; // Se não tiver navio, marca com bola de canhão
@@ -46,6 +47,7 @@ class GameBoard {
 		if (allCellsValid) {
 			return "Game over";
 		} else {
+			return "Game still in progress";
 		}
 	}
 }
@@ -56,9 +58,9 @@ class Player extends GameBoard {
 		this.real = real;
 	}
 
-	ShipPosition() {
-		if (this.real == true) {
-			//Solicitar ao jogador para clicar e colocar um navio em cada posição
+	ShipPosition(buttonIndex) {
+		if (this.real === true) {
+			// Solicitar ao jogador para clicar e colocar um navio em cada posição
 			const ships = [
 				{ size: 6 },
 				{ size: 4 },
@@ -71,12 +73,8 @@ class Player extends GameBoard {
 				{ size: 2 },
 			];
 
-			ships.forEach((ship) => {
-				let position = parseInt();
-				//prompt(`Digite a posição inicial para o navio (de 0 a 99):`)
-				// passe um valor pelo click do mouse
-				this.PutShip(ship, position);
-			});
+			let position = buttonIndex; // Usando o índice do botão para determinar a posição
+			this.PutShip(ships[0], position);
 		} else {
 			const ships = [
 				{ size: 6, position: 2 },
