@@ -1,6 +1,5 @@
 class Ship {
-	constructor(length) {
-		this.length = length; // Comprimento do navio
+	constructor() {
 		this.sunk = false; // Estado inicial do navio
 	}
 
