@@ -23,7 +23,7 @@ class GameBoard {
 		this.ships = [];
 	}
 
-	SetGame() {
+	setGame() {
 		this.sea = new Array(100).fill("water");
 		this.ships = [];
 	}
@@ -39,19 +39,20 @@ class GameBoard {
 
 	addShip(ship, position) {
 		if (this.isPositionValid(ship.size, position)) {
-			this.PutShip(ship, position);
+			this.putShip(ship, position);
 			this.ships.push(ship);
 			return true;
 		}
+		return false;
 	}
 
-	PutShip(ship, position) {
+	putShip(ship, position) {
 		for (let i = 0; i < ship.size; i++) {
 			this.sea[position + i] = ship;
 		}
 	}
 
-	GotAttacked(attack) {
+	gotAttacked(attack) {
 		const target = this.sea[attack];
 		if (target instanceof Ship) {
 			target.hit();
@@ -67,7 +68,7 @@ class GameBoard {
 		}
 	}
 
-	GameEnd() {
+	gameEnd() {
 		const allCellsValid = this.sea.every(
 			(cell) =>
 				cell === "water" || cell === "Sunken Ship" || cell === "cannonball"
@@ -89,8 +90,8 @@ class Player extends GameBoard {
 		this.shipIndex = 0;
 	}
 
-	ShipPosition() {
-		if (this.real === true) {
+	shipPosition() {
+		if (this.real) {
 			const ships = [
 				{ size: 6 },
 				{ size: 4 },
@@ -121,7 +122,7 @@ class Player extends GameBoard {
 							);
 							this.boardElement.removeEventListener("mouseout", handleMouseOut);
 							const machine = new MachinePlayer("machine-board");
-							machine.SetGame();
+							machine.setGame();
 							machine.autoPlaceShips();
 							alert("All ships placed! Game started.");
 							this.startGame(machine);
@@ -170,7 +171,7 @@ class Player extends GameBoard {
 			const cell = this.boardElement.querySelector(
 				`[data-index="${position + i}"]`
 			);
-			if (cell && cell.classList.contains("ship") === false) {
+			if (cell && !cell.classList.contains("ship")) {
 				cell.classList.add("preview");
 			}
 		}
@@ -186,7 +187,7 @@ class Player extends GameBoard {
 			const cell = event.target;
 			const position = parseInt(cell.dataset.index);
 
-			const result = machine.GotAttacked(position);
+			const result = machine.gotAttacked(position);
 			if (result === "hit") {
 				cell.classList.add("hit");
 			} else {
@@ -203,9 +204,9 @@ class Player extends GameBoard {
 					machineCell.classList.add("miss");
 				}
 
-				if (this.GameEnd() === "Game over") {
+				if (this.gameEnd() === "Game over") {
 					alert("You won!");
-				} else if (machine.GameEnd() === "Game over") {
+				} else if (machine.gameEnd() === "Game over") {
 					alert("Machine won!");
 				}
 			}
@@ -214,8 +215,9 @@ class Player extends GameBoard {
 }
 
 class MachinePlayer extends GameBoard {
-	constructor(boardId, boardMachine) {
+	constructor(boardId) {
 		super();
+		this.boardId = boardId;
 	}
 
 	autoPlaceShips() {
@@ -239,6 +241,7 @@ class MachinePlayer extends GameBoard {
 			}
 		});
 	}
+
 	randomAttack() {
 		let attackPosition;
 		do {
@@ -247,38 +250,27 @@ class MachinePlayer extends GameBoard {
 			this.sea[attackPosition] === "cannonball" ||
 			this.sea[attackPosition] === "Sunken Ship"
 		);
-		const result = this.GotAttacked(attackPosition);
+		const result = this.gotAttacked(attackPosition);
 		return { position: attackPosition, result };
 	}
 }
 
 const player = new Player(true, "player-board");
 const player2 = new Player(false, "machine-board");
-player.SetGame();
-player2.SetGame();
-createBoard();
-createMachineBoard();
-player.ShipPosition();
-player2.ShipPosition;
+player.setGame();
+player2.setGame();
+createBoard("player-board");
+createBoard("machine-board");
+player.shipPosition();
+player2.shipPosition();
 
-function createBoard() {
-	const boardElement = document.getElementById("player-board");
+function createBoard(boardId) {
+	const boardElement = document.getElementById(boardId);
 	for (let i = 0; i < 100; i++) {
 		const cell = document.createElement("div");
 		cell.classList.add("cell");
 		cell.dataset.index = i;
 		cell.id = i;
 		boardElement.appendChild(cell);
-	}
-}
-
-function createMachineBoard() {
-	const boardMachineElement = document.getElementById("machine-board");
-	for (let i = 0; i < 100; i++) {
-		const cell = document.createElement("div");
-		cell.classList.add("cell");
-		cell.dataset.index = i;
-		cell.id = i;
-		boardMachineElement.appendChild(cell);
 	}
 }

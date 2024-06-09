@@ -40,3 +40,9 @@ body {
 .ButtonSection > div:nth-child(1) > a:nth-child(1) > button:nth-child(1) {
 	padding-right: 5rem;
 }
+
+.regular {
+	font-family: "Tiny5", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+}

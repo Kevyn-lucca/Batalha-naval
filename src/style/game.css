@@ -4,6 +4,10 @@ section {
 	justify-content: space-evenly;
 }
 
+h1 {
+	font-size: 4rem;
+}
+
 #NameDiv {
 	display: flex;
 	margin-top: 1rem;
@@ -36,4 +40,10 @@ section {
 }
 .cell.sunk {
 	background-color: black;
+}
+
+.regular {
+	font-family: "Tiny5", sans-serif;
+	font-weight: 400;
+	font-style: normal;
 }
